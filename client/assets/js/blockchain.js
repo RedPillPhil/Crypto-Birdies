@@ -1,4 +1,4 @@
-var web3 = new Web3(Web3.tronWeb);//Wallet will inject the selected network
+var web3 = new Web3(Web3.givenProvider);//Wallet will inject the selected network
 tronWeb.autoRefreshOnNetworkChange = false;
 
 var birdInstance;
