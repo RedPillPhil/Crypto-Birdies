@@ -5,8 +5,8 @@ var birdInstance;
 var marketInstance;
 var user;
 var access = false;
-var birdAddress = "0x70e2324ccf7a76e201dff26d4749ed1bb821c305"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
-var marketAddress = "0x78ad2f9c3924278692125a23ed05d4e5facfd97c"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
+var birdAddress = "0xf726545f6302175b1485279a7501883b2a22c3ee"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
+var marketAddress = "0xf726545F6302175b1485279A7501883b2A22c3EE"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
 
 async function connectWallet() {
     return window.ethereum.enable().then(function(accounts){
