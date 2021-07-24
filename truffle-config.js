@@ -59,7 +59,7 @@ module.exports = {
 
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
-    ropsten: {
+    tronWeb: {
       provider: () => new HDWalletProvider(mnemonic, `https://api.trongrid.io`),
       network_id: 1,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
