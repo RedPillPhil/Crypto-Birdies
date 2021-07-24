@@ -1,18 +1,18 @@
 var web3 = new Web3(Web3.givenProvider);//Wallet will inject the selected network
-ethereum.autoRefreshOnNetworkChange = false;
+tronWeb.autoRefreshOnNetworkChange = false;
 
 var birdInstance;
 var marketInstance;
 var user;
 var access = false;
-var birdAddress = "0x448f14E3209543ebba581f30E0f8f0570311423D"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
-var marketAddress = "0x7ef6293D4ebBE4baDC3B02A5232bFD44cE65b6fE"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
+var birdAddress = "0x70e2324ccf7a76e201dff26d4749ed1bb821c305"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
+var marketAddress = "0x78ad2f9c3924278692125a23ed05d4e5facfd97c"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
 
 async function connectWallet() {
-    return window.ethereum.enable().then(function(accounts){
+    return window.tronWeb.enable().then(function(accounts){
         user = accounts[0];
-        birdInstance = new web3.eth.Contract(abi.birdContract, birdAddress, {from: user});
-        marketInstance = new web3.eth.Contract(abi.marketContract, marketAddress, {from: user});
+        birdInstance = new web3.trx.Contract(abi.birdContract, birdAddress, {from: user});
+        marketInstance = new web3.trx.Contract(abi.marketContract, marketAddress, {from: user});
 
         birdInstance.events.Birth()
             .on('data', async function (event) {
@@ -87,7 +87,7 @@ async function connectWallet() {
 };
 
 async function isCurrentUserOwner(eventOwner) {
-    var currentUsers = await web3.eth.getAccounts();
+    var currentUsers = await web3.trx.getAccounts();
     for (let i = 0; i < currentUsers.length; i++) {
         if (currentUsers[i] == eventOwner) {
             return true;
@@ -134,7 +134,7 @@ async function initializeMarketplace() {
 
 async function onlyOwnerAccess() {//limits access to studio and pause/resume to contract owner
     var owner = await birdInstance.methods.getContractOwner().call();
-    var currentUser = await web3.eth.getAccounts();
+    var currentUser = await web3.trx.getAccounts();
     for (let i = 0; i < currentUser.length; i++) {
 
         //logic for owner
@@ -242,8 +242,8 @@ async function getPrice(id) {
     try {
         result = await marketInstance.methods.getOffer(id).call();
         if (result.price > 0 && result.active == true) {
-            ethPrice = web3.utils.fromWei(result.price, "ether");
-            return ethPrice;
+            trxPrice = web3.utils.fromWei(result.price, "ether");
+            return trxPrice;
         }
     } catch (error) {
         console.log(error);
