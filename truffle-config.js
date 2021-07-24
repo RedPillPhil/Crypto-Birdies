@@ -19,13 +19,9 @@
  */
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const TRON-PRO-API-KEY = "bd382004c5da4c80b22a9f0c61f8e3b6";
+const infuraKey = "af92af9e6ec54bac8aef07b4e858de62";
 const fs = require('fs');
 const mnemonic = fs.readFileSync(".env").toString().trim();
-const tronWeb = new TronWeb({
-    fullHost: 'https://api.trongrid.io',
-    privateKey: 'your private key'
-})
 
 module.exports = {
   /**
@@ -63,9 +59,9 @@ module.exports = {
 
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
-    tronWeb: {
-      provider: () => new HDWalletProvider(mnemonic, `https://api.tronstack.io`),
-      network_id: 0,       // Ropsten's id
+    ropsten: {
+      provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/9cbfc0a887aa44dda2332984f821cd51`),
+      network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
