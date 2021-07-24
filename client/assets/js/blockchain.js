@@ -5,14 +5,14 @@ var birdInstance;
 var marketInstance;
 var user;
 var access = false;
-var birdAddress = "0x448f14E3209543ebba581f30E0f8f0570311423D"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
-var marketAddress = "0x7ef6293D4ebBE4baDC3B02A5232bFD44cE65b6fE"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
+var birdAddress = "0x70e2324ccf7a76e201dff26d4749ed1bb821c305"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
+var marketAddress = "0x78ad2f9c3924278692125a23ed05d4e5facfd97c"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
 
 async function connectWallet() {
     return window.tronWeb.enable().then(function(accounts){
         user = accounts[0];
-        birdInstance = new web3.eth.Contract(abi.birdContract, birdAddress, {from: user});
-        marketInstance = new web3.eth.Contract(abi.marketContract, marketAddress, {from: user});
+        birdInstance = new web3.tron.Contract(abi.birdContract, birdAddress, {from: user});
+        marketInstance = new web3.tron.Contract(abi.marketContract, marketAddress, {from: user});
 
         birdInstance.events.Birth()
             .on('data', async function (event) {
@@ -87,7 +87,7 @@ async function connectWallet() {
 };
 
 async function isCurrentUserOwner(eventOwner) {
-    var currentUsers = await web3.eth.getAccounts();
+    var currentUsers = await web3.tron.getAccounts();
     for (let i = 0; i < currentUsers.length; i++) {
         if (currentUsers[i] == eventOwner) {
             return true;
@@ -98,19 +98,19 @@ async function isCurrentUserOwner(eventOwner) {
 };
 
 async function checkPause() {
-    return await marketInstance.methods.isPaused().call();
+    return await marketInstance.mtronods.isPaused().call();
 };
 
 async function pauseResumeContract() {
     $('#pauseMessage').show();
     $('#pauseMessage').text("Waiting for confirmations from blockchain...");
     if(!await checkPause()){
-        await marketInstance.methods.pause().send({}, function(error){
+        await marketInstance.mtronods.pause().send({}, function(error){
             if (error) {
                 console.log(error);
             }});
     } else {
-        await marketInstance.methods.resume().send({}, function(error){
+        await marketInstance.mtronods.resume().send({}, function(error){
             if (error) {
                 console.log(error);
             };
@@ -120,10 +120,10 @@ async function pauseResumeContract() {
 };
 
 async function initializeMarketplace() {
-    var marketplaceApprovedOperator = await birdInstance.methods.isApprovedForAll(
+    var marketplaceApprovedOperator = await birdInstance.mtronods.isApprovedForAll(
         user, marketAddress).call();
     if (marketplaceApprovedOperator == false) {
-        await birdInstance.methods.setApprovalForAll(marketAddress, true).send(
+        await birdInstance.mtronods.setApprovalForAll(marketAddress, true).send(
             {}, function(error){
             if (error) {
                 console.log(error);
@@ -133,8 +133,8 @@ async function initializeMarketplace() {
 };
 
 async function onlyOwnerAccess() {//limits access to studio and pause/resume to contract owner
-    var owner = await birdInstance.methods.getContractOwner().call();
-    var currentUser = await web3.eth.getAccounts();
+    var owner = await birdInstance.mtronods.getContractOwner().call();
+    var currentUser = await web3.tron.getAccounts();
     for (let i = 0; i < currentUser.length; i++) {
 
         //logic for owner
@@ -180,7 +180,7 @@ async function onlyOwnerAccess() {//limits access to studio and pause/resume to 
 };
 
 async function withdraw() {
-    await marketInstance.methods.withdrawFunds().send({}, function(error){
+    await marketInstance.mtronods.withdrawFunds().send({}, function(error){
         if (error) {
             $('#withdrawButton').show();
             console.log(error);
@@ -191,7 +191,7 @@ async function withdraw() {
 async function returnBalance() {
     var balance;
     try {
-        balance = await marketInstance.methods.getBalance().call();
+        balance = await marketInstance.mtronods.getBalance().call();
         if (balance >= 0) {
             return web3.utils.fromWei(balance);
         }
@@ -204,8 +204,8 @@ async function returnBalance() {
 async function sellBird(price, id) {
     $('#offerCreated').css("display", "block");
     $('#offerCreated').text("Waiting for confirmations from blockchain...");
-    var inWei = web3.utils.toWei(price, "ether");
-    await marketInstance.methods.setOffer(inWei, id).send({}, function(error){
+    var inWei = web3.utils.toWei(price, "troner");
+    await marketInstance.mtronods.setOffer(inWei, id).send({}, function(error){
         if (error) {
             $(`#birdPrice${id}`).show();
             $(`#offerButton${id}`).show();
@@ -217,7 +217,7 @@ async function sellBird(price, id) {
 async function removeOffer(id) {
     $('#offerRemoved').css("display", "block");
     $('#offerRemoved').text("Waiting for confirmations from blockchain...");
-    await marketInstance.methods.removeOffer(id).send({}, function(error){
+    await marketInstance.mtronods.removeOffer(id).send({}, function(error){
         if (error) {
             $(`#cancelButton${id}`).show();
             console.log(error);
@@ -228,8 +228,8 @@ async function removeOffer(id) {
 async function buyBird(price, id) {
     $('#birdPurchased').css("display", "block");
     $('#birdPurchased').text("Waiting for confirmations from blockchain...");
-    var inWei = web3.utils.toWei(price, "ether");
-    await marketInstance.methods.buyBird(id).send({ value: inWei }, function(error){
+    var inWei = web3.utils.toWei(price, "troner");
+    await marketInstance.mtronods.buyBird(id).send({ value: inWei }, function(error){
         if (error) {
             $(`#buyButton${id}`).show();
             console.log(error);
@@ -240,10 +240,10 @@ async function buyBird(price, id) {
 async function getPrice(id) {
     var result;
     try {
-        result = await marketInstance.methods.getOffer(id).call();
+        result = await marketInstance.mtronods.getOffer(id).call();
         if (result.price > 0 && result.active == true) {
-            ethPrice = web3.utils.fromWei(result.price, "ether");
-            return ethPrice;
+            tronPrice = web3.utils.fromWei(result.price, "troner");
+            return tronPrice;
         }
     } catch (error) {
         console.log(error);
@@ -252,7 +252,7 @@ async function getPrice(id) {
 };
 
 async function createBird() {
-    await birdInstance.methods.createBirdGen0(getDna()).send({}, function(error){
+    await birdInstance.mtronods.createBirdGen0(getDna()).send({}, function(error){
         if (error) {
             console.log(error);
         };
@@ -262,7 +262,7 @@ async function createBird() {
 async function getBirdsOfOwner() {
     var ids = [];
     try {
-        ids = await birdInstance.methods.getAllBirdsOfOwner(user).call();
+        ids = await birdInstance.mtronods.getAllBirdsOfOwner(user).call();
     } catch (error) {
         console.log(error);
     };
@@ -272,7 +272,7 @@ async function getBirdsOfOwner() {
 async function getBirdsOnSale() {
     var ids = [];
     try {
-        ids = await marketInstance.methods.getAllTokensOnSale().call();
+        ids = await marketInstance.mtronods.getAllTokensOnSale().call();
     } catch (error) {
         console.log(error);
     };
@@ -281,7 +281,7 @@ async function getBirdsOnSale() {
 
 async function buildCatalog(ids){
     for (let i = 0; i < ids.length; i++) {
-        bird = await birdInstance.methods.getBird(ids[i]).call();
+        bird = await birdInstance.mtronods.getBird(ids[i]).call();
         appendBirdToCatalog(bird, ids[i]);
     };
     activateCatalogEventListeners();//must be activated after all buttons are rendered.
@@ -289,14 +289,14 @@ async function buildCatalog(ids){
 
 async function buildModal(ids){
     for (let i = 0; i < ids.length; i++) {
-        bird = await birdInstance.methods.getBird(ids[i]).call();
+        bird = await birdInstance.mtronods.getBird(ids[i]).call();
         appendBirdToModal(bird, ids[i]);
     };
 };
 
 async function buildMarket(ids){
     for (let i = 0; i < ids.length; i++) {
-        bird = await birdInstance.methods.getBird(ids[i]).call();
+        bird = await birdInstance.mtronods.getBird(ids[i]).call();
         await appendBirdToMarket(bird, ids[i]);
     };
     await activateBuyButtonListeners();//must be activated after all buttons are rendered.
@@ -304,14 +304,14 @@ async function buildMarket(ids){
 
 async function buildOffers(ids){
     for (let i = 0; i < ids.length; i++) {
-        bird = await birdInstance.methods.getBird(ids[i]).call();
+        bird = await birdInstance.mtronods.getBird(ids[i]).call();
         await appendBirdToOffers(bird, ids[i]);
     };
     activateCancelButtonListeners();
 };
 
 async function getBirdDna(id) {
-    return await birdInstance.methods.getBird(id).call();
+    return await birdInstance.mtronods.getBird(id).call();
 };
 
 async function breedBird(dadId, mumId) {
@@ -323,7 +323,7 @@ async function breedBird(dadId, mumId) {
     $('#sireButton').hide();
     $('#swapButton').hide();
     $('#breedFooter').css("top", "-99em");
-    await birdInstance.methods.breed(dadId, mumId).send({}, function(error){
+    await birdInstance.mtronods.breed(dadId, mumId).send({}, function(error){
         if (error) {
             $('#birdCreation').hide();
             $('.evolvingHeart').hide();
