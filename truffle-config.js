@@ -19,7 +19,7 @@
  */
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const infuraKey = "bd382004c5da4c80b22a9f0c61f8e3b6";
+const TRON-PRO-API-KEY = "bd382004c5da4c80b22a9f0c61f8e3b6";
 const fs = require('fs');
 const mnemonic = fs.readFileSync(".env").toString().trim();
 
