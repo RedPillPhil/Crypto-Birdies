@@ -5,11 +5,11 @@ var birdInstance;
 var marketInstance;
 var user;
 var access = false;
-var birdAddress = "0x448f14E3209543ebba581f30E0f8f0570311423D"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
-var marketAddress = "0x7ef6293D4ebBE4baDC3B02A5232bFD44cE65b6fE"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
+var birdAddress = "THcBm8LNuirdoSuEfAxbdCzdSysAu5rUK4"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
+var marketAddress = "TBZEk59UtCxURff4Xupj27t88WHGmE1x4v"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
 
 async function connectWallet() {
-    return window.ethereum.enable().then(function(accounts){
+    return window.tronWeb.enable().then(function(accounts){
         user = accounts[0];
         birdInstance = new web3.eth.Contract(abi.birdContract, birdAddress, {from: user});
         marketInstance = new web3.eth.Contract(abi.marketContract, marketAddress, {from: user});
