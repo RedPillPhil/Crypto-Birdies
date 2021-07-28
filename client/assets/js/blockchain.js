@@ -1,10 +1,10 @@
-eumvar web3 = new Web3(Web3.givenProvider);//Wallet will inject the selected network
-ethereum.autoRefreshOnNetworkChange = true;
+var web3 = new Web3(Web3.givenProvider);//Wallet will inject the selected network
+ethereum.autoRefreshOnNetworkChange = false;
 
 var birdInstance;
 var marketInstance;
 var user;
-var access = true;
+var access = false;
 var birdAddress = "0x448f14E3209543ebba581f30E0f8f0570311423D"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
 var marketAddress = "0x7ef6293D4ebBE4baDC3B02A5232bFD44cE65b6fE"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
 
