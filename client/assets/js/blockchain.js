@@ -1,5 +1,5 @@
 var web3 = new Web3(Web3.givenProvider);//Wallet will inject the selected network
-ethereum.autoRefreshOnNetworkChange = false;
+tronWeb.autoRefreshOnNetworkChange = false;
 
 var birdInstance;
 var marketInstance;
@@ -11,8 +11,8 @@ var marketAddress = "TBZEk59UtCxURff4Xupj27t88WHGmE1x4v"; // Ropsten: 0x78ad2f9c
 async function connectWallet() {
     return window.tronWeb.enable().then(function(accounts){
         user = accounts[0];
-        birdInstance = new web3.tronWeb.Contract(abi.birdContract, birdAddress, {from: user});
-        marketInstance = new web3.tronWeb.Contract(abi.marketContract, marketAddress, {from: user});
+        birdInstance = new web3.tron.Contract(abi.birdContract, birdAddress, {from: user});
+        marketInstance = new web3.tron.Contract(abi.marketContract, marketAddress, {from: user});
 
         birdInstance.events.Birth()
             .on('data', async function (event) {
