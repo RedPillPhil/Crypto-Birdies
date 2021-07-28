@@ -1,52 +1,5 @@
 var web3 = new Web3(Web3.givenProvider);//Wallet will inject the selected network
 tronWeb.autoRefreshOnNetworkChange = false;
-
- let VueTRON = {
-        data() {
-            return {
-                tron: {
-                    tronWeb: false,
-                    auth: false,
-                    account: ''
-                }
-            };
-        },
-        created() {
-            let self = this,
-                tries = 0;
-
-            setTimeout(function initTimer() {
-                if(!window.tronWeb) return ++tries < 50 ? setTimeout(initTimer, 100) : null;
-
-                self.tron.tronWeb = !!window.tronWeb;
-
-                window.tronWeb.on('addressChanged', function() {
-                    self.tron.account = window.tronWeb.defaultAddress.base58;
-                });
-
-                setTimeout(function chechAuth() {
-                    self.tron.auth = window.tronWeb && window.tronWeb.ready;
-                    if(!self.tron.auth) setTimeout(chechAuth, 200);
-                    else self.tron.account = window.tronWeb.defaultAddress.base58;
-                }, 200);
-            }, 100);
-        },
-        methods: {
-            getTronWeb() {
-                return new Promise((resolve, reject) => {
-                    window.tronWeb ? resolve(window.tronWeb) : reject('TronWeb not found');
-                });
-            },
-            awaitTx(tx) {
-                return new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        resolve();
-                    }, 8000);
-                });
-            }
-        }
-    };
-
 var birdInstance;
 var marketInstance;
 var user;
@@ -180,7 +133,7 @@ async function initializeMarketplace() {
 
 async function onlyOwnerAccess() {//limits access to studio and pause/resume to contract owner
     var owner = await birdInstance.methods.getContractOwner().call();
-    var currentUser = await web3.eth.getAccounts();
+    var currentUser = await web3.tron.getAccounts();
     for (let i = 0; i < currentUser.length; i++) {
 
         //logic for owner
