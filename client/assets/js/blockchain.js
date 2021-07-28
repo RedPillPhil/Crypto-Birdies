@@ -11,8 +11,8 @@ var marketAddress = "TBZEk59UtCxURff4Xupj27t88WHGmE1x4v"; // Ropsten: 0x78ad2f9c
 async function connectWallet() {
     return window.tronWeb.enable().then(function(accounts){
         user = accounts[0];
-        birdInstance = new web3.eth.Contract(abi.birdContract, birdAddress, {from: user});
-        marketInstance = new web3.eth.Contract(abi.marketContract, marketAddress, {from: user});
+        birdInstance = new web3.tron.Contract(abi.birdContract, birdAddress, {from: user});
+        marketInstance = new web3.tron.Contract(abi.marketContract, marketAddress, {from: user});
 
         birdInstance.events.Birth()
             .on('data', async function (event) {
@@ -87,7 +87,7 @@ async function connectWallet() {
 };
 
 async function isCurrentUserOwner(eventOwner) {
-    var currentUsers = await web3.eth.getAccounts();
+    var currentUsers = await web3.tron.getAccounts();
     for (let i = 0; i < currentUsers.length; i++) {
         if (currentUsers[i] == eventOwner) {
             return true;
