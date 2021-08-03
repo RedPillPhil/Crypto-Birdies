@@ -1,8 +1,8 @@
-.bird {
-	left:5em;
+.bird { /*overall bird position*/
+	left:10em;
 	font-size: 5px;
 	position:relative;
-	top: 5em;
+	top: 15em;
 }
 
 .feather_top {
@@ -185,8 +185,8 @@
 	border-bottom-left-radius: 200%;
 	border-top-left-radius: 10%;
 	border-top-right-radius: 40%;
-	height: 5em;
-	left: 31em;
+	height: 25em;
+	left: 13em;
 	position: relative;
 	top: 26em;
 	transform: rotate(-70deg) skewY(20deg) scale(1.5, 2.7);
