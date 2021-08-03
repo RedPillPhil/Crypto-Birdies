@@ -182,11 +182,11 @@
 .beak_upper {
 	background: #e9b90d;
 	border: 0.3em solid black;
-	border-bottom-left-radius: 200%;
+	border-bottom-left-radius: 10%;
 	border-top-left-radius: 10%;
 	border-top-right-radius: 40%;
 	height: 25em;
-	left: 13em;
+	left: 31em;
 	position: relative;
 	top: 26em;
 	transform: rotate(-70deg) skewY(20deg) scale(1.5, 2.7);
