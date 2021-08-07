@@ -1,18 +1,18 @@
 var web3 = new Web3(Web3.givenProvider);//Wallet will inject the selected network
-ethereum.autoRefreshOnNetworkChange = false;
+tronWeb.autoRefreshOnNetworkChange = false;
 
 var birdInstance;
 var marketInstance;
 var user;
 var access = false;
-var birdAddress = "0x53c73c5DA5274884747E2b5BeE76f8261455462b"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
-var marketAddress = "0x1167B8e91151cb3d39a9f47328BdBe17c13a57d9"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
+var birdAddress = "THcBm8LNuirdoSuEfAxbdCzdSysAu5rUK4"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
+var marketAddress = "TBZEk59UtCxURff4Xupj27t88WHGmE1x4v"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
 
 async function connectWallet() {
-    return window.ethereum.enable().then(function(accounts){
+    return window.tronWeb.enable().then(function(accounts){
         user = accounts[0];
-        birdInstance = new web3.eth.Contract(abi.birdContract, birdAddress, {from: user});
-        marketInstance = new web3.eth.Contract(abi.marketContract, marketAddress, {from: user});
+        birdInstance = new web3.trx.Contract(abi.birdContract, birdAddress, {from: user});
+        marketInstance = new web3.trx.Contract(abi.marketContract, marketAddress, {from: user});
 
         birdInstance.events.Birth()
             .on('data', async function (event) {
@@ -87,7 +87,7 @@ async function connectWallet() {
 };
 
 async function isCurrentUserOwner(eventOwner) {
-    var currentUsers = await web3.eth.getAccounts();
+    var currentUsers = await web3.trx.getAccounts();
     for (let i = 0; i < currentUsers.length; i++) {
         if (currentUsers[i] == eventOwner) {
             return true;
@@ -134,7 +134,7 @@ async function initializeMarketplace() {
 
 async function onlyOwnerAccess() {//limits access to studio and pause/resume to contract owner
     var owner = await birdInstance.methods.getContractOwner().call();
-    var currentUser = await web3.eth.getAccounts();
+    var currentUser = await web3.trx.getAccounts();
     for (let i = 0; i < currentUser.length; i++) {
 
         //logic for owner
