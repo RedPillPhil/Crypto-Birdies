@@ -17,6 +17,26 @@ var access = false;
 var birdAddress = "THcBm8LNuirdoSuEfAxbdCzdSysAu5rUK4"; //Ropsten: 0x70e2324ccf7a76e201dff26d4749ed1bb821c305
 var marketAddress = "TBZEk59UtCxURff4Xupj27t88WHGmE1x4v"; // Ropsten: 0x78ad2f9c3924278692125a23ed05d4e5facfd97c
 
+
+async componentDidMount() {
+
+    this.setState({loading:true})
+    await new Promise(resolve => {
+        const tronWebState = {
+            installed: !!window.tronWeb,
+            loggedIn: window.tronWeb && window.tronWeb.ready
+        };
+
+        if(tronWebState.installed) {
+            this.setState({
+                tronWeb:
+                tronWebState
+            });
+            return resolve();
+        }
+    });
+}
+
 async function connectWallet() {
     return window.tronWeb.enable().then(function(accounts){
         user = accounts[0];
