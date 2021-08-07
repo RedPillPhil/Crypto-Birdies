@@ -35,7 +35,24 @@ async componentDidMount() {
             return resolve();
         }
     });
-}
+};
+
+window.onload = function() {
+  if (!window.tronWeb) {
+    const HttpProvider = TronWeb.providers.HttpProvider;
+    const fullNode = new HttpProvider('https://api.trongrid.io');
+    const solidityNode = new HttpProvider('https://api.trongrid.io');
+    const eventServer = 'https://api.trongrid.io/';
+    
+    const tronWeb = new TronWeb(
+        fullNode,
+        solidityNode,
+        eventServer,
+    );
+
+    window.tronWeb = tronWeb;
+  }
+};
 
 async function connectWallet() {
     return window.tronWeb.enable().then(function(accounts){
