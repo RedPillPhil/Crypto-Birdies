@@ -1,6 +1,15 @@
 var web3 = new Web3(Web3.givenProvider);//Wallet will inject the selected network
 tronWeb.autoRefreshOnNetworkChange = false;
 
+const TronWeb = require('tronweb')
+
+const tronWeb = new TronWeb(
+    "http://127.0.0.1:9090",
+    "http://127.0.0.1:9090",
+    "http://127.0.0.1:9090",
+    'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0',
+);
+
 var birdInstance;
 var marketInstance;
 var user;
