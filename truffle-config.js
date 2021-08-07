@@ -75,9 +75,9 @@ module.exports = {
       fullHost: "http://127.0.0.1:9090",
       network_id: "9"
     }
-  }
+  },
     
-    const TronWeb = require('tronweb')
+const TronWeb = require('tronweb')
 
 const tronWeb = new TronWeb(
     "http://127.0.0.1:9090",
